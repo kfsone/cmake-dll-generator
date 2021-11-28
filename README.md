@@ -2,7 +2,9 @@ Simulation of an external/out-of-tree DLL dependency that has configuration-spec
 
 # Usage
 
-Build the DLL:
+Either run the `./test-run.ps1` script, or
+
+## Build the DLL
 
 ```powershell
 cmake-dll-generator\> cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B dll/build dll
@@ -14,6 +16,8 @@ cmake-dll-generator\> cmake --install dll/build
 ```
 
 this populates ./dll/lib with a dllD.{lib,dll} and dllR.{lib,dll}.
+
+## Try to build the executable
 
 ```powershell
 cmake-dll-generator\> cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B build .
