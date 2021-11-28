@@ -22,9 +22,7 @@ this populates ./dll/lib with a dllD.{lib,dll} and dllR.{lib,dll}.
 ```powershell
 cmake-dll-generator\> cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B build .
 cmake-dll-generator\> cmake --build build
+cmake-dll-generator\> cmake --install build
 ```
 
-This should build "build\App.exe".
-
-Instead, we receive an error because the generator expression in
-externaldll's `IMPORTED_IMPLIB` was passed as-is to the linker.
+This should build "build\App.exe" and install it into ./App/App.exe and ./App/dllD.dll

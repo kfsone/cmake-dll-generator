@@ -3,13 +3,30 @@
 #
 #
 
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B dll/build dll
-cmake --build dll/build
-cmake --install dll/build
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -B dll/build dll
-cmake --build dll/build
-cmake --install dll/build
+function AttemptRun() {
+  Param([String] $Config)
+  echo "== ${Config}"
+  echo ""
 
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -B build .
-cmake --build build  # fails
-#cmake --install build
+  cmake -G Ninja "-DCMAKE_BUILD_TYPE=${Config}" -B dll/build dll
+  cmake --build dll/build --config $Config --clean-first
+  cmake --install dll/build --config $Config
+
+  cmake -G Ninja "-DCMAKE_BUILD_TYPE=${Config}" -B build .
+  cmake --build build  --config $Config --clean-first
+  cmake --install build --config $Config
+
+  if (!(Test-Path ./App/App.exe)) {
+    throw "Failed: could not find App/App.exe"
+  }
+  if (!(Test-Path ./App/dllD.dll)) {
+    throw "Failed: dllD.dll was not copied to ./App"
+  }
+  echo "-- Running App.exe:"
+  & ./App/App.exe
+  echo ""
+}
+
+AttemptRun "Debug"
+AttemptRun "Release"
+AttemptRun "RelWithDebInfo"
